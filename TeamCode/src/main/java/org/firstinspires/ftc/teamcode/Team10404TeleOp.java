@@ -94,11 +94,10 @@ public class Team10404TeleOp extends OpMode
         // telemetry.addData("Status", "Initialized");
     }
 
-    /*
-     * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
-     */
+
     @Override
     public void init_loop() {
+        Servo1.setPosition(ServoOut);
     }
 
     /*
@@ -114,23 +113,67 @@ public class Team10404TeleOp extends OpMode
      */
     @Override
     public void loop() {
-        telemetry.addData("Status", "Running: " + runtime.toString());
+        telemetry.addData("Status", "Running: " + runtime.toString() + " count: " + count + " gamepad.a: " + gamepad1.a + "Servo In " + Servo1.getPosition());
 
         // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
         leftMotor.setPower(gamepad1.left_stick_y);
         rightMotor.setPower(gamepad1.right_stick_y);
 
-        if(gamepad2.right_bumper = true && count <= 1500){ // Trial and error!!
-            catapult.setPower(127);
+
+        if(gamepad2.a == true)
+        {
+            //Determine if the arm is at init, or at end position.
+            if (count <= 1100)
+            {
+                count++;
+                catapult.setPower(1);
+            }
+
+            if (count >= 1100)
+            {
+                catapult.setPower(0);
+                Servo1.setPosition(ServoIn);
+            }
+        }
+
+        if(gamepad2.b == true && gamepad2.a == false)
+        {
+            if(count >= 1100 && Servo1.getPosition() == ServoIn)
+            {
+                Servo1.setPosition(ServoOut);
+            }
+            if(count >= 0)
+            {
+                count--;
+                catapult.setPower(-1);
+            }
+        }
+
+        if(count <= 0)
+        {
+            catapult.setPower(0);
+        }
+
+
+
+
+        /*
+
+        if(gamepad2.a == true && count <= 1000){ // Trial and error!!
+            catapult.setPower(1);
             count++;
         }
 
-        if(count >= 1500){
+        else{
+            catapult.setPower(0);
+        }
+
+        if(count >= 1000){
             Servo1.setPosition(ServoIn);
         }
 
-        if (Servo1.getPosition() == ServoIn && count > 0){
-            catapult.setPower(-127);
+        if ((Servo1.getPosition() == ServoIn) && (count > 0)){
+            catapult.setPower(-1);
             count--;
         }
 
@@ -139,7 +182,7 @@ public class Team10404TeleOp extends OpMode
         }
 
 
-
+        */
 
     }
 
