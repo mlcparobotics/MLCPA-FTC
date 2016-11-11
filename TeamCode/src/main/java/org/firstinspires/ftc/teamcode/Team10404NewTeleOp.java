@@ -52,7 +52,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Team10404TeleOp", group="Iterative Opmode")  // @Autonomous(...) is the other common choice
+@TeleOp(name="Team10404NewTeleOp", group="Iterative Opmode")  // @Autonomous(...) is the other common choice
 
 public class Team10404NewTeleOp extends OpMode
 {
@@ -61,13 +61,13 @@ public class Team10404NewTeleOp extends OpMode
 
     private DcMotor leftMotor = null;
     private DcMotor rightMotor = null;
-    private DcMotor catapult = null;
-    private Servo Servo1 = null;
-
-    double ServoMin = .01;
-    double ServoMax = .99;
-    double ServoIn = .01;
-    double ServoOut = .25;
+    private DcMotor telescope = null;
+    private Servo beacon = null;
+    private Servo balista = null;
+    double beaconMin = .01;
+    double beaconMax = .99;
+    double beaconUp = .01;
+    double beaconDown = .25;
     int count = 0;
 
     /*
@@ -83,9 +83,9 @@ public class Team10404NewTeleOp extends OpMode
          */
         leftMotor  = hardwareMap.dcMotor.get("leftMotor");
         rightMotor = hardwareMap.dcMotor.get("rightMotor");
-        catapult = hardwareMap.dcMotor.get("catapult");
-        Servo1 = hardwareMap.servo.get("Servo1");
-
+        telescope = hardwareMap.dcMotor.get("telescope");
+        beacon = hardwareMap.servo.get("beacon");
+        balista = hardwareMap.servo.get("balista");
         // eg: Set the drive motor directions:
         // Reverse the motor that runs backwards when connected directly to the battery
         // leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
@@ -96,7 +96,8 @@ public class Team10404NewTeleOp extends OpMode
 
     @Override
     public void init_loop() {
-        Servo1.setPosition(ServoOut);
+        beacon.setPosition(beaconDown);
+        balista.setPosition(1); //set to 0.5 for no movement
     }
 
     /*
@@ -112,7 +113,7 @@ public class Team10404NewTeleOp extends OpMode
      */
     @Override
     public void loop() {
-        telemetry.addData("Status", "Running: " + runtime.toString() + " count: " + count + " gamepad.a: " + gamepad1.a + "Servo In " + Servo1.getPosition());
+        telemetry.addData("Status", "Running: " + runtime.toString() + " count: " + count + " gamepad.a: " + gamepad1.a + "beacon" + beacon.getPosition());
 
         // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
         leftMotor.setPower(gamepad1.left_stick_y);
@@ -122,35 +123,31 @@ public class Team10404NewTeleOp extends OpMode
         if(gamepad2.a == true)
         {
             //Determine if the arm is at init, or at end position.
-            if (count <= 1100)
-            {
-                count++;
-                catapult.setPower(1);
-            }
-
-            if (count >= 1100)
-            {
-                catapult.setPower(0);
-                Servo1.setPosition(ServoIn);
-            }
+//            if (count <= 1100)
+//            {
+//                count++;
+                telescope.setPower(.3);
+//            }
+//
+//            if (count >= 1100)
+//            {
+//                telescope.setPower(0);
+//                Servo1.setPosition(ServoIn);
+//            }
+        }
+        else if (gamepad2.b==true) {
+            telescope.setPower(-.3);
+        }
+        else
+        {
+            telescope.setPower(0);
         }
 
-        if(gamepad2.b == true && gamepad2.a == false)
-        {
-            if(count >= 1100 && Servo1.getPosition() == ServoIn)
-            {
-                Servo1.setPosition(ServoOut);
-            }
-            if(count >= 0)
-            {
-                count--;
-                catapult.setPower(-1);
-            }
+        if(gamepad2.left_bumper==true){
+            beacon.setPosition(beaconUp);
         }
-
-        if(count <= 0)
-        {
-            catapult.setPower(0);
+        else if (gamepad2.right_bumper == true){
+            beacon.setPosition(beaconDown);
         }
 
 
