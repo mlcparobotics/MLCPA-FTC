@@ -53,6 +53,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
+
+// Created by Juan Alvarado and Mr. Laforet 12/3/2016
+// First TeleOp Program
+
+    
 @TeleOp(name="Juan in a Million", group="Iterative Opmode")  // @Autonomous(...) is the other common choice
 
 public class Juan_in_a_Million extends OpMode
