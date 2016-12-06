@@ -33,15 +33,15 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 
-@Autonomous(name="Template: Linear OpMode", group="Linear Opmode")  // @Autonomous(...) is the other common choice
+@Autonomous(name="Team10405Auton", group="Linear Opmode")  // @Autonomous(...) is the other common choice
 
 public class Team10405Auton extends LinearOpMode {
 
@@ -50,21 +50,20 @@ public class Team10405Auton extends LinearOpMode {
     DcMotor motorLeft = null;
     DcMotor motorRight = null;
     DcMotor beaconMotor = null;
+    DcMotor batMotor = null;
 
+/*
     public void Stop(){
         motorLeft.setPower(0);
         motorRight.setPower(0);
         sleep(10);
     }
-
+        //Using this function to test Mr.Laforet's idea
     public void FWD(){
-        motorLeft.setPower(1);
         motorRight.setPower(1);
+        motorLeft.setPower(1);
         sleep(1000);
 
-        motorLeft.setPower(0);
-        motorRight.setPower(0);
-        sleep(1000);
     }
     public void Forward(double speed, int duration){
         motorLeft.setPower(speed);
@@ -88,9 +87,9 @@ public class Team10405Auton extends LinearOpMode {
         sleep(duration);
 
         Stop();
-    }
+    } */
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -101,22 +100,28 @@ public class Team10405Auton extends LinearOpMode {
         motorLeft  = hardwareMap.dcMotor.get("motorLeft");
         motorRight = hardwareMap.dcMotor.get("motorRight");
         beaconMotor = hardwareMap.dcMotor.get("beaconMotor");
+        batMotor = hardwareMap.dcMotor. get("batMotor");
 
         // eg: Set the drive motor directions:
         // "Reverse" the motor that runs backwards when connected directly to the battery
         // leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         motorRight.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        batMotor.setDirection(DcMotor.Direction.REVERSE);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
-        // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.update();
 
-            FWD();
+        //Move forward test 12/5/16
+        motorRight.setPower(1);
+        motorLeft.setPower(1);
+        sleep(2000);
+
+        //Test batting motor 12/5/16
+        batMotor.setPower(.5);
+        sleep(400);
+
 
 
 /*
@@ -154,6 +159,6 @@ public class Team10405Auton extends LinearOpMode {
             sleep(1000);
 */
 
-        }
+
     }
 }
