@@ -53,7 +53,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Template: Linear OpMode", group="Linear Opmode")  // @Autonomous(...) is the other common choice
+@Autonomous(name="Juan on Juan", group="Linear Opmode")  // @Autonomous(...) is the other common choice
 
 public class Juan_on_Juan extends LinearOpMode {
 
