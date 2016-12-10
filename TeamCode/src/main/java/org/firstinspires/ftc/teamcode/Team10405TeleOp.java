@@ -38,7 +38,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
+// Edited on 12/6/16 by Andres Salas
 
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
@@ -60,10 +60,10 @@ public class Team10405TeleOp extends OpMode
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
 
-    private DcMotor leftMotor = null;
-    private DcMotor rightMotor = null;
-    private DcMotor leftShooter = null;
-    private DcMotor rightShooter = null;
+    private DcMotor motorLeft = null;
+    private DcMotor motorRight = null;
+    private DcMotor beaconMotor = null;
+    private DcMotor batMotor = null;
     private boolean isShootersOn = false;
 
 
@@ -79,17 +79,20 @@ public class Team10405TeleOp extends OpMode
          * to 'get' must correspond to the names assigned during the robot configuration
          * step (using the FTC Robot Controller app on the phone).
          */
-        leftMotor  = hardwareMap.dcMotor.get("leftMotor");
-        rightMotor = hardwareMap.dcMotor.get("rightMotor");
-        leftShooter = hardwareMap.dcMotor.get("leftShooter");
-        rightShooter = hardwareMap.dcMotor.get("rightShooter");
+        motorLeft  = hardwareMap.dcMotor.get("motorLeft");
+        motorRight = hardwareMap.dcMotor.get("motorRight");
+        beaconMotor = hardwareMap.dcMotor.get("beaconMotor");
+        batMotor = hardwareMap.dcMotor.get("batMotor");
 
         // eg: Set the drive motor directions:
         // Reverse the motor that runs backwards when connected directly to the battery
         // leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        leftMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
-        leftShooter.setDirection(DcMotor.Direction.REVERSE);
+        motorLeft.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        batMotor.setDirection(DcMotor.Direction.REVERSE);
+        beaconMotor.setDirection(DcMotor.Direction.REVERSE);
         // telemetry.addData("Status", "Initialized");
+
+
     }
 
     /*
@@ -115,38 +118,65 @@ public class Team10405TeleOp extends OpMode
         telemetry.addData("Status", "Running: " + runtime.toString());
 
         // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
-        if(gamepad1.left_bumper == true && gamepad1.left_trigger == 0)
+        if(gamepad1.left_bumper && gamepad1.left_trigger == 0)
         {
-            leftMotor.setPower(-1);
+            motorLeft.setPower(-1);
         }
 
         else if(gamepad1.left_trigger > 0 && gamepad1.left_bumper == false){
-            leftMotor.setPower(gamepad1.left_trigger);
+            motorLeft.setPower(gamepad1.left_trigger);
         }
 
         else{
-            leftMotor.setPower(0);
+            motorLeft.setPower(0);
         }
 
-        if(gamepad1.right_bumper == true && gamepad1.right_trigger == 0)
+        if(gamepad1.right_bumper && gamepad1.right_trigger == 0)
         {
-            rightMotor.setPower(-1);
+            motorRight.setPower(-1);
         }
 
         else if(gamepad1.right_trigger > 0 && gamepad1.right_bumper == false){
-            rightMotor.setPower(gamepad1.right_trigger);
+            motorRight.setPower(gamepad1.right_trigger);
         }
 
         else{
-            rightMotor.setPower(0);
+            motorRight.setPower(0);
         }
+
+
+        //Attempt to move batMotor
+        if(gamepad1.y) {
+            batMotor.setPower(1);
+        }
+        else if(gamepad1.x){
+            batMotor.setPower(-1);
+        }
+        else {
+            batMotor.setPower(0);
+
+
+         // set beaconMotor forward
+        }
+        if(gamepad1.a){
+            beaconMotor.setPower(.6);
+        }
+        else if(gamepad1.b) {
+            beaconMotor.setPower(-.6);
+        }
+        else {
+            beaconMotor.setPower(0);
+        }
+
+
+
+
 
 
         //Get User Input
 
-        if(gamepad1.a){
-           rightShooter.setPower(1);
-           leftShooter.setPower(1);
+       /* if(gamepad1.a){
+         leftShooter.setPower(1);
         }
         else
         {
@@ -175,7 +205,7 @@ public class Team10405TeleOp extends OpMode
             leftShooter.setPower(0);
         }
 
-
+*/
     }
 
     /*

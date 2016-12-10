@@ -2,7 +2,7 @@
 Copyright (c) 2016 Robert Atkinson
 
 All rights reserved.
-This program capable of performing the following tasks
+
 Redistribution and use in source and binary forms, with or without modification,
 are permitted (subject to the limitations in the disclaimer below) provided that
 the following conditions are met:
@@ -33,63 +33,56 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+/**
+ * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
+ * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
+ * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
+ * class is instantiated on the Robot Controller and executed.
+ *
+ * This particular OpMode just executes a basic Tank Drive Teleop for a PushBot
+ * It includes all the skeletal structure that all linear OpModes contain.
+ *
+ * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
+ * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
+ */
 
-
-@Autonomous(name="Team10405Auton", group="Linear Opmode")  // @Autonomous(...) is the other common choice
-
-public class Team10405Auton extends LinearOpMode {
+@Autonomous(name="auto10405", group="Linear Opmode")  // @Autonomous(...) is the other common choice
+public class auto10405 extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
     DcMotor motorLeft = null;
     DcMotor motorRight = null;
     DcMotor beaconMotor = null;
-    DcMotor batMotor = null;
+    DcMotor batmotor = null;
 
+    // DcMotor leftMotor = null;
+    // DcMotor rightMotor = null;
+
+     public void Forward(Double speed, int duration){
+         motorRight.setPower(speed);
+         motorLeft.setPower(speed);
+         sleep(duration);
+
+         stop();
+     }
 /*
-    public void Stop(){
-        motorLeft.setPower(0);
-        motorRight.setPower(0);
-        sleep(10);
-    }
-        //Using this function to test Mr.Laforet's idea
-    public void FWD(){
-        motorRight.setPower(1);
-        motorLeft.setPower(1);
-        sleep(1000);
-
-    }
-    public void Forward(double speed, int duration){
-        motorLeft.setPower(speed);
-        motorRight.setPower(speed);
+    public void Swing(Double speed, int duration) {
+        beaconMotor.setPower(speed);
         sleep(duration);
 
-
-        Stop();
+        stop();
     }
-    public void Reverse(int duration){
-        motorLeft.setPower(-1);
-        motorRight.setPower(-1);
-        sleep(duration);
-
-        Stop();
-
-    }
-    public void Turnleft(int duration){
-        motorLeft.setPower(-1);
-        motorRight.setPower(1);
-        sleep(duration);
-
-        Stop();
-    } */
+*/
     @Override
-    public void runOpMode()  {
+    public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -97,91 +90,59 @@ public class Team10405Auton extends LinearOpMode {
          * to 'get' must correspond to the names assigned during the robot configuration
          * step (using the FTC Robot Controller app on the phone).
          */
-        motorLeft  = hardwareMap.dcMotor.get("motorLeft");
+        // leftMotor  = hardwareMap.dcMotor.get("left_drive");
+        // rightMotor = hardwareMap.dcMotor.get("right_drive");
+        motorLeft = hardwareMap.dcMotor.get("motorLeft");
         motorRight = hardwareMap.dcMotor.get("motorRight");
         beaconMotor = hardwareMap.dcMotor.get("beaconMotor");
-        batMotor = hardwareMap.dcMotor. get("batMotor");
+        batmotor = hardwareMap.dcMotor.get("batMotor");
 
         // eg: Set the drive motor directions:
+
         // "Reverse" the motor that runs backwards when connected directly to the battery
         // leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        motorRight.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
-        batMotor.setDirection(DcMotor.Direction.REVERSE);
-        beaconMotor.setDirection(DcMotor.Direction.REVERSE);
-
-
+        // rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        motorRight.setDirection(DcMotor.Direction.REVERSE);
+        beaconMotor. setDirection((DcMotor.Direction.REVERSE));
+        batmotor. setDirection(DcMotor.Direction.REVERSE);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
-        //Swing froward for two seconds
-        beaconMotor.setPower(.5);
-        sleep(200);
+        //Swing bat once
+
+        //Beacon
+        beaconMotor.setPower(.3);
+        sleep(750);
         beaconMotor.setPower(0);
 
-        //turn left for 1 second
+        //Forward for 3 seconds, 500 miliseconds
         motorLeft.setPower(1);
         motorRight.setPower(1);
+        sleep(3500);
+        motorRight.setPower(0);
+        motorLeft.setPower(0);
+
+        //Reverse for one second
+        motorLeft.setPower(-1);
+        motorRight.setPower(-1);
         sleep(1000);
-
         motorLeft.setPower(0);
         motorRight.setPower(0);
 
 
 
-        //Test bat motor 12/6/16
-        batMotor.setPower(.6);
-        sleep(800);
-        batMotor.setPower(0);
-
-        //Move forward test 12/5/16
-        motorRight.setPower(1);
-        motorLeft.setPower(1);
-        sleep(2000);
-        motorRight.setPower(0);
-        motorLeft.setPower(0);
-
-        //Test batting motor 12/5/16
-        batMotor.setPower(.5);
-        sleep(400);
-        batMotor.setPower(0);
 
 
-/*
-            Forward(1, 2000);
-         //Unnecessary, Just use function for forward and input negative numbers
-            Reverse(1000);
-         // Might work, supposed to turn left for half a second
-            Turnleft(500);
-*/
+        // run until the end of the match (driver presses STOP)
+        while (opModeIsActive()) {
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.update();
 
-        // Forward one second
-            motorLeft.setPower(.5);
-            motorRight.setPower(.5);
-            sleep(1000);
-
-            // Stop for 10 milliseconds
-            motorLeft.setPower(0);
-            motorRight.setPower(0);
-            sleep(10);
-
-            //Turn left one second
-            motorLeft.setPower(0);
-            motorRight.setPower(1);
-            sleep(1000);
-
-                //Forward for one second
-            motorLeft.setPower(1);
-            motorRight.setPower(1);
-            sleep(1000);
-
-            //Stop for one second
-            motorLeft.setPower(0);
-            motorRight.setPower(0);
-            sleep(1000);
-
-
-
+            // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
+            // leftMotor.setPower(-gamepad1.left_stick_y);
+            // rightMotor.setPower(-gamepad1.right_stick_y);
+        }
     }
 }
