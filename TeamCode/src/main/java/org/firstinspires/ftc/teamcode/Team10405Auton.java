@@ -132,7 +132,7 @@ public class Team10405Auton extends LinearOpMode {
 
         //Test bat motor 12/6/16
         batMotor.setPower(.6);
-        sleep(800);
+        sleep(600);
         batMotor.setPower(0);
 
         //Move forward test 12/5/16

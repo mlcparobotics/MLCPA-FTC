@@ -37,6 +37,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 // Edited on 12/6/16 by Andres Salas
 
@@ -64,13 +65,14 @@ public class Team10405TeleOp extends OpMode
     private DcMotor motorRight = null;
     private DcMotor beaconMotor = null;
     private DcMotor batMotor = null;
+    private TouchSensor TouchSensor = null;
     private boolean isShootersOn = false;
 
 
 
     /*
-     * Code to run ONCE when the driver hits INIT
-     */
+         * Code to run ONCE when the driver hits INIT
+         */
     @Override
     public void init() {
         telemetry.addData("Status", "Initialized");
@@ -83,6 +85,7 @@ public class Team10405TeleOp extends OpMode
         motorRight = hardwareMap.dcMotor.get("motorRight");
         beaconMotor = hardwareMap.dcMotor.get("beaconMotor");
         batMotor = hardwareMap.dcMotor.get("batMotor");
+        TouchSensor= hardwareMap.touchSensor.get("TouchSensor");
 
         // eg: Set the drive motor directions:
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -106,6 +109,13 @@ public class Team10405TeleOp extends OpMode
      * Code to run ONCE when the driver hits PLAY
      */
     @Override
+
+
+
+
+
+
+
     public void start() {
         runtime.reset();
     }
@@ -115,7 +125,9 @@ public class Team10405TeleOp extends OpMode
      */
     @Override
     public void loop() {
-        telemetry.addData("Status", "Running: " + runtime.toString());
+        telemetry.addData("Touch Sensor Value: ", TouchSensor.getValue());
+        // telemetry.addData("Touch Sensor Value: ", TouchSensor);
+
 
         // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
         if(gamepad1.left_bumper && gamepad1.left_trigger == 0)
@@ -167,6 +179,9 @@ public class Team10405TeleOp extends OpMode
         else {
             beaconMotor.setPower(0);
         }
+
+
+
 
 
 

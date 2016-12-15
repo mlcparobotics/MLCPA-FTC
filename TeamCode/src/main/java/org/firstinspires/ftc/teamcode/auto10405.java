@@ -112,6 +112,8 @@ public class auto10405 extends LinearOpMode {
 
         //Swing bat once
 
+
+
         //Beacon
         beaconMotor.setPower(.3);
         sleep(750);
@@ -130,6 +132,7 @@ public class auto10405 extends LinearOpMode {
         sleep(1000);
         motorLeft.setPower(0);
         motorRight.setPower(0);
+
 
 
 
