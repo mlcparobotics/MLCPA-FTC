@@ -112,27 +112,36 @@ public class auto10405 extends LinearOpMode {
 
         //Swing bat once
 
-
+        //Before Move forward
+        motorLeft.setPower(0);
+        motorRight.setPower(0);
+        sleep(10000);
+        //motorRight.setPower(0);
+        //motorLeft.setPower(0);
 
         //Beacon
         beaconMotor.setPower(.3);
-        sleep(750);
+        sleep(800);
         beaconMotor.setPower(0);
+        //beaconMotor.setPower(0);
 
         //Forward for 3 seconds, 500 miliseconds
-        motorLeft.setPower(1);
-        motorRight.setPower(1);
-        sleep(3500);
-        motorRight.setPower(0);
+        motorLeft.setPower(.7);
+        motorRight.setPower(.7);
+        sleep(2000);
         motorLeft.setPower(0);
+        motorRight.setPower(0);
+        //motorRight.setPower(0);
+        //motorLeft.setPower(0);
 
         //Reverse for one second
-        motorLeft.setPower(-1);
-        motorRight.setPower(-1);
+        motorLeft.setPower(-.5);
+        motorRight.setPower(-.5);
         sleep(1000);
         motorLeft.setPower(0);
         motorRight.setPower(0);
-
+        //motorLeft.setPower(0);
+        //motorRight.setPower(0);
 
 
 
