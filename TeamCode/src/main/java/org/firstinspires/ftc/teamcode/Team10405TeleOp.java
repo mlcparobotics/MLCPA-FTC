@@ -130,31 +130,17 @@ public class Team10405TeleOp extends OpMode
 
 
         // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
-        if(gamepad1.left_bumper && gamepad1.left_trigger == 0)
+        if(TouchSensor.isPressed())
         {
-            motorLeft.setPower(-1);
-        }
-
-        else if(gamepad1.left_trigger > 0 && gamepad1.left_bumper == false){
-            motorLeft.setPower(gamepad1.left_trigger);
+            motorLeft.setPower(gamepad1.left_stick_y);
+            motorRight.setPower(gamepad1.right_stick_y);
         }
 
         else{
-            motorLeft.setPower(0);
+            motorLeft.setPower(-gamepad1.right_stick_y);
+            motorRight.setPower(-gamepad1.left_stick_y);
         }
 
-        if(gamepad1.right_bumper && gamepad1.right_trigger == 0)
-        {
-            motorRight.setPower(-1);
-        }
-
-        else if(gamepad1.right_trigger > 0 && gamepad1.right_bumper == false){
-            motorRight.setPower(gamepad1.right_trigger);
-        }
-
-        else{
-            motorRight.setPower(0);
-        }
 
 
         //Attempt to move batMotor
