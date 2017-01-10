@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /**
@@ -31,6 +32,7 @@ public class LKP_Robotics_Code extends LinearOpMode {
         liftMotor2 = hardwareMap.dcMotor.get("liftMotor2");
 
         motorLeft.setDirection(DcMotor.Direction.REVERSE);
+        liftMotor2.setDirection(DcMotor.Direction.REVERSE);
 
         arms = hardwareMap.servo.get("arms");
 
