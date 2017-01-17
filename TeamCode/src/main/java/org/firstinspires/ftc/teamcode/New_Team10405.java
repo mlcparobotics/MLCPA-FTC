@@ -133,12 +133,12 @@ public class New_Team10405 extends LinearOpMode {
             }
 
             if (gamepad1.a){
-                motorLeft.setPower(1);
-                motorRight.setPower(1);
-                sleep(250);
-
                 motorLeft.setPower(-1);
                 motorRight.setPower(-1);
+                sleep(250);
+
+                motorLeft.setPower(1);
+                motorRight.setPower(1);
                 sleep(250);
 
             }
