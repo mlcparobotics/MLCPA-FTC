@@ -40,6 +40,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 // Edited on 12/6/16 by Andres Salas
+//This program has a touch sensor. When the touch sensor is pressed, the motors are reversed.
 
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
@@ -67,6 +68,8 @@ public class Team10405TeleOp extends OpMode
     private DcMotor batMotor = null;
     private TouchSensor TouchSensor = null;
     private boolean isShootersOn = false;
+
+    boolean flip = false;
 
 
 
@@ -127,8 +130,25 @@ public class Team10405TeleOp extends OpMode
     public void loop() {
         telemetry.addData("Touch Sensor Value: ", TouchSensor.getValue());
         // telemetry.addData("Touch Sensor Value: ", TouchSensor);
+        if(gamepad1.dpad_up){
+            flip = true;
+        }
 
+        if (gamepad1.dpad_down){
+            flip = false;
+        }
 
+        if(flip){
+            motorRight.setPower(-gamepad1.left_stick_y);
+            motorLeft.setPower(-gamepad1.right_stick_y);
+        }
+
+        else{
+            motorLeft.setPower(gamepad1.left_stick_y);
+            motorRight.setPower(gamepad1.right_stick_y);
+        }
+
+       /*
         // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
         if(gamepad1.left_bumper && gamepad1.left_trigger == 0)
         {
@@ -155,6 +175,8 @@ public class Team10405TeleOp extends OpMode
         else{
             motorRight.setPower(0);
         }
+
+        */
 
 
         //Attempt to move batMotor

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016 Robert Atkinson
+
 
 All rights reserved.
 
@@ -33,11 +33,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -53,34 +50,19 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="auto10405", group="Linear Opmode")  // @Autonomous(...) is the other common choice
-public class auto10405 extends LinearOpMode {
+@Autonomous(name="blue_team10405", group="Linear Opmode")  // @Autonomous(...) is the other common choice
+public class beacon_auton_10405 extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
     DcMotor motorLeft = null;
     DcMotor motorRight = null;
-    DcMotor beaconMotor = null;
     DcMotor batmotor = null;
 
-    // DcMotor leftMotor = null;
-    // DcMotor rightMotor = null;
 
-     public void Forward(Double speed, int duration){
-         motorRight.setPower(speed);
-         motorLeft.setPower(speed);
-         sleep(duration);
 
-         stop();
-     }
-/*
-    public void Swing(Double speed, int duration) {
-        beaconMotor.setPower(speed);
-        sleep(duration);
 
-        stop();
-    }
-*/
+
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -94,7 +76,6 @@ public class auto10405 extends LinearOpMode {
         // rightMotor = hardwareMap.dcMotor.get("right_drive");
         motorLeft = hardwareMap.dcMotor.get("motorLeft");
         motorRight = hardwareMap.dcMotor.get("motorRight");
-        beaconMotor = hardwareMap.dcMotor.get("beaconMotor");
         batmotor = hardwareMap.dcMotor.get("batMotor");
 
         // eg: Set the drive motor directions:
@@ -102,23 +83,46 @@ public class auto10405 extends LinearOpMode {
         // "Reverse" the motor that runs backwards when connected directly to the battery
         // leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         // rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
-        motorRight.setDirection(DcMotor.Direction.REVERSE);
-        beaconMotor. setDirection((DcMotor.Direction.REVERSE));
+        motorLeft.setDirection(DcMotor.Direction.REVERSE);
         batmotor. setDirection(DcMotor.Direction.REVERSE);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+
         runtime.reset();
 
-        //Swing bat once
-
-        //Before Move forward
         motorLeft.setPower(0);
         motorRight.setPower(0);
         sleep(10000);
+
+        //Drive forward
+        motorLeft.setPower(.5);
+        motorRight.setPower(.5);
+        sleep(500);
+
+        //Turn Right
+        motorRight.setPower(.7);
+        motorLeft.setPower(0);
+        sleep(600);
+
+        motorRight.setPower(0);
+
+        //Swing bat motor
+        batmotor.setPower(1);
+        sleep(1000);
+        batmotor.setPower(0);
+
+        //Before Move forward
+        motorLeft.setPower(-.5);
+        motorRight.setPower(-.5);
+        sleep(2000);
+
+        motorLeft.setPower(0);
+        motorRight.setPower(0);
         //motorRight.setPower(0);
         //motorLeft.setPower(0);
 
+/*
         //Beacon
         beaconMotor.setPower(.3);
         sleep(800);
@@ -142,10 +146,24 @@ public class auto10405 extends LinearOpMode {
         motorRight.setPower(0);
         //motorLeft.setPower(0);
         //motorRight.setPower(0);
+        ;
+*/
+/*
+        //Test made on 1/13/17 to make sure robot is running it's auton program correctly
+        //Test part 1: Drive forward for 2 seconds
+        motorRight.setPower(1);
+        motorLeft.setPower(1);
+        sleep(1000);
 
+        //Test part 2: Reverse for 3 seconds
+        motorRight.setPower(-.5);
+        motorLeft.setPower(-.5);
+        sleep(3000);
 
-
-
+        motorLeft.setPower(0);
+        motorRight.setPower(0);
+        sleep(10000);
+*/
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {

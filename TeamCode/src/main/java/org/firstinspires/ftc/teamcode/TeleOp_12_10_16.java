@@ -36,7 +36,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -53,28 +52,17 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Laforet Lift Servo", group="Iterative Opmode")  // @Autonomous(...) is the other common choice
+@TeleOp(name="TeleOp 12-10-16", group="Iterative Opmode")  // @Autonomous(...) is the other common choice
 
-public class Laforet_Lift_Servo extends OpMode
+public class TeleOp_12_10_16 extends OpMode
 {
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
 
-    private DcMotor motorLeft;
-    private DcMotor motorRight;
-    private DcMotor Lift;
-
-
-    private Servo liftArmLeft;
-    private Servo liftArmRight;
-    private Servo lance;
-
-    private double LANCE_EXTENDED_POSITION = 0.0;
-    private double LANCE_RETRACTED_POSITION = 0.6;
-    private double ServoUp = .5;
-    private double ServoDown = .999999;
-
-
+    private DcMotor leftMotor = null;
+    private DcMotor rightMotor = null;
+    private DcMotor intakeMotor = null;
+    private DcMotor flywheelMotor = null;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -87,24 +75,15 @@ public class Laforet_Lift_Servo extends OpMode
          * to 'get' must correspond to the names assigned during the robot configuration
          * step (using the FTC Robot Controller app on the phone).
          */
-
-        motorLeft = hardwareMap.dcMotor.get("motorLeft");
-        motorRight = hardwareMap.dcMotor.get("motorRight");
-        Lift = hardwareMap.dcMotor.get("Lift");
-        lance = hardwareMap.servo.get("lance");
-        liftArmLeft = hardwareMap.servo.get("liftArmLeft");
-        liftArmRight = hardwareMap.servo.get("liftArmRight");
-
-        motorLeft.setDirection(DcMotor.Direction.REVERSE);
-
-        lance.setPosition(LANCE_RETRACTED_POSITION);
-        liftArmRight.setPosition(ServoUp);
-        liftArmLeft.setPosition(1 - ServoUp);
+        leftMotor  = hardwareMap.dcMotor.get("leftMotor");
+        rightMotor = hardwareMap.dcMotor.get("rightMotor");
+        intakeMotor = hardwareMap.dcMotor.get("intakeMotor");
+        flywheelMotor = hardwareMap.dcMotor.get("flywheelMotor");
 
         // eg: Set the drive motor directions:
         // Reverse the motor that runs backwards when connected directly to the battery
         // leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        //  rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
         // telemetry.addData("Status", "Initialized");
     }
 
@@ -128,47 +107,34 @@ public class Laforet_Lift_Servo extends OpMode
      */
     @Override
     public void loop() {
-        telemetry.addData("Status", "Running: " + runtime.toString() + "  liftArmLeft: " + liftArmLeft.getPosition() +  "  liftArmRight: " + liftArmRight.getPosition() +  "  ServoDown: " + ServoDown);
+        telemetry.addData("Status", "Running: " + runtime.toString() + " left_bumper: " + gamepad1.left_bumper + ", right_bumper: " + gamepad1.right_bumper);
 
         // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
-        // leftMotor.setPower(-gamepad1.left_stick_y);
-        // rightMotor.setPower(-gamepad1.right_stick_y);
+        leftMotor.setPower(-gamepad1.left_stick_y);
+        rightMotor.setPower(-gamepad1.right_stick_y);
 
-        motorLeft.setPower(-gamepad1.left_stick_y);
-        motorRight.setPower(-gamepad1.right_stick_y);
-
-
-        if (gamepad1.a) {
-            lance.setPosition(LANCE_EXTENDED_POSITION);
-        }
-        if (gamepad1.x) {
-            lance.setPosition(LANCE_RETRACTED_POSITION);
+        if(gamepad1.left_bumper){
+            intakeMotor.setPower(1);
         }
 
-        if (gamepad1.right_trigger > 0) {
-            Lift.setPower(-1);
-        } else if (gamepad1.left_trigger > 0) {
-            Lift.setPower(1);
-        } else {
-            Lift.setPower(0);
+        else if(gamepad1.right_bumper){
+            intakeMotor.setPower(-1);
         }
 
-        if (gamepad1.y) {
-            liftArmRight.setPosition(ServoUp);
-            liftArmLeft.setPosition(1 - ServoUp);
+        else {
+            intakeMotor.setPower(0);
         }
 
-        if (gamepad1.b) {
-            liftArmLeft.setPosition(1 - ServoDown);
-            liftArmRight.setPosition(ServoDown);
+        if(gamepad1.left_trigger > 0){
+            flywheelMotor.setPower(1);
         }
 
-        if (gamepad1.left_bumper && ServoDown > .02) {
-            ServoDown = ServoDown - .01;
+        else if(gamepad1.right_trigger > 0){
+            flywheelMotor.setPower(-1);
         }
 
-        if (gamepad1.right_bumper && ServoDown < .98) {
-            ServoDown = ServoDown + .01;
+        else{
+            flywheelMotor.setPower(0);
         }
     }
 
