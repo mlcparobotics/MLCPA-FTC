@@ -39,7 +39,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-// Edited on 12/6/16 by Andres Salas
+// Edited on 10/6/16 by Andres Salas
 
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
