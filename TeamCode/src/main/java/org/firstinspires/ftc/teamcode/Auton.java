@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Auton extends LinearOpMode {
     CrabBot_Hardware CrabBot = new CrabBot_Hardware();
     ElapsedTime runtime = new ElapsedTime();
-    CrabBot_Vuforia Vuforia = new CrabBot_Vuforia();
+//    CrabBot_Vuforia Vuforia = new CrabBot_Vuforia();
 
     private void TurnLeft(double x, int i){
         CrabBot.FrontLeft.setPower(x);
